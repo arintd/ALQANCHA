@@ -2,8 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using ALQCANCHA.Context;
 using Microsoft.AspNetCore.Mvc;
 
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AlqanchaDatabaseContext>(
