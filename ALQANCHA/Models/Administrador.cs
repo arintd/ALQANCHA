@@ -22,7 +22,7 @@ namespace ALQANCHA.Models
 
 
         [Required(ErrorMessage = "El teléfono es obligatorio")]
-        [StringLength(30, MinimumLength = 5, ErrorMessage = "El teléfono debe tener entre 5 y 30 caracteres")]
+        [StringLength(15, MinimumLength = 5, ErrorMessage = "El teléfono debe tener entre 5 y 30 caracteres")]
         public string Telefono { get; set; }
 
         [Required]
