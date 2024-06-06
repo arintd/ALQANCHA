@@ -17,8 +17,11 @@ namespace ALQANCHA.Models
         [ForeignKey("Jugador")]
         public int JugadorId { get; set; }
 
+        [Required(ErrorMessage = "Debe describir el motivo de la sanción")]
+        [StringLength(250, MinimumLength = 5, ErrorMessage = "El motivo de la sanción debe tener entre 5 y 250 caracteres")]
         public string Descripcion { get; set; }
 
+        [Required]
         [Display(Name = "Fecha de Imposición")]
         public DateTime FechaImposicion { get; set; }
 
