@@ -19,11 +19,24 @@ namespace ALQANCHA.Models
         [ForeignKey("Cancha")]
         public int CanchaId { get; set; }
         [Display(Name = "Fecha de Reserva")]
+
+        [Required]
         public DateTime Fecha { get; set; }
         [Display(Name = "Hora de Reserva")]
+
+        [Required]
         public TimeSpan Hora { get; set; }
+
+        [Required(ErrorMessage = "El nombre es obligatorio")]
+        [StringLength(30, MinimumLength = 5, ErrorMessage = "El nombre debe tener entre 5 y 30 caracteres")]
         public string Nombre { get; set; }
+
+        [Required(ErrorMessage = "El apellido es obligatorio")]
+        [StringLength(30, MinimumLength = 5, ErrorMessage = "El apellido debe tener entre 5 y 30 caracteres")]
         public string Apellido { get; set; }
+
+        [Required(ErrorMessage = "La cantidad de jugadores es obligatoria")]
+        [Range(1, 11, ErrorMessage = "La cantidad de jugadores debe estar entre 1 y 11")]
         public int CantJugadores { get; set; }
         public bool RequiereJugador { get; set; }
         public bool RequiereArquero { get; set; }
