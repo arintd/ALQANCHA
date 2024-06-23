@@ -4,6 +4,7 @@ using ALQCANCHA.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ALQANCHA.Migrations
 {
     [DbContext(typeof(AlqanchaDatabaseContext))]
-    partial class AlqanchaDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240622174131_CrearReserva")]
+    partial class CrearReserva
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,8 +152,7 @@ namespace ALQANCHA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AdministradorId")
-                        .IsRequired()
+                    b.Property<int>("AdministradorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Apellido")
@@ -158,8 +160,7 @@ namespace ALQANCHA.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int?>("CanchaId")
-                        .IsRequired()
+                    b.Property<int>("CanchaId")
                         .HasColumnType("int");
 
                     b.Property<int>("CantJugadores")

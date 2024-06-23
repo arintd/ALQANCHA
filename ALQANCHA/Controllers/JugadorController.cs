@@ -46,15 +46,14 @@ namespace ALQANCHA.Controllers
         // GET: Jugador/Create
         public IActionResult Create()
         {
+            ViewData["HorasDisponibles"] = new SelectList(Enumerable.Range(10, 15).Select(h => new { Value = new TimeSpan(h, 0, 0), Text = $"{h}:00" }), "Value", "Text");
             return View();
         }
 
         // POST: Jugador/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Dni,Nombre,Apellido,Email,Telefono,EsArquero,EsJugador,FechaDisponible,HoraDisponible,EstaSancionado")] Jugador jugador)
+        public async Task<IActionResult> Create([Bind("Id,Dni,Nombre,Apellido,Email,Telefono,EsArquero,EsJugador,FechaDisponible,HoraInicio,EstaSancionado")] Jugador jugador)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +61,7 @@ namespace ALQANCHA.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["HorasDisponibles"] = new SelectList(Enumerable.Range(10, 15).Select(h => new { Value = new TimeSpan(h, 0, 0), Text = $"{h}:00" }), "Value", "Text", jugador.HoraInicio);
             return View(jugador);
         }
 
@@ -78,15 +78,14 @@ namespace ALQANCHA.Controllers
             {
                 return NotFound();
             }
+            ViewData["HorasDisponibles"] = new SelectList(Enumerable.Range(10, 15).Select(h => new { Value = new TimeSpan(h, 0, 0), Text = $"{h}:00" }), "Value", "Text", jugador.HoraInicio);
             return View(jugador);
         }
 
         // POST: Jugador/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Dni,Nombre,Apellido,Email,Telefono,EsArquero,EsJugador,FechaDisponible,HoraDisponible,EstaSancionado")] Jugador jugador)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Dni,Nombre,Apellido,Email,Telefono,EsArquero,EsJugador,FechaDisponible,HoraInicio,EstaSancionado")] Jugador jugador)
         {
             if (id != jugador.Id)
             {
@@ -113,6 +112,7 @@ namespace ALQANCHA.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["HorasDisponibles"] = new SelectList(Enumerable.Range(10, 15).Select(h => new { Value = new TimeSpan(h, 0, 0), Text = $"{h}:00" }), "Value", "Text", jugador.HoraInicio);
             return View(jugador);
         }
 

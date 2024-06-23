@@ -7,16 +7,22 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Fecha)
+                @Html.DisplayNameFor(model => model.Administrador.Nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Hora)
+                @Html.DisplayNameFor(model => model.Cancha.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaReserva)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoraInicio)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
@@ -43,59 +49,63 @@
                 @Html.DisplayNameFor(model => model.Confirmada)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Administrador)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cancha)
+                Jugadores
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fecha)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Hora)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Apellido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CantJugadores)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RequiereJugador)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RequiereArquero)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EsStream)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoReserva)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Confirmada)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Administrador.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cancha.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Administrador.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cancha.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaReserva)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraInicio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Apellido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CantJugadores)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequiereJugador)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequiereArquero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EsStream)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoReserva)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Confirmada)
+                </td>
+                <td>
+                    @foreach (var jugador in item.ReservaJugadores)
+                    {
+                        <p>@jugador.Jugador.Nombre</p>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

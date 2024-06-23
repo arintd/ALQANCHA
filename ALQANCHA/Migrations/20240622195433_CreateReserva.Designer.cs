@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ALQANCHA.Migrations
 {
     [DbContext(typeof(AlqanchaDatabaseContext))]
-    [Migration("20240529234012_Inicial")]
-    partial class Inicial
+    [Migration("20240622195433_CreateReserva")]
+    partial class CreateReserva
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,12 +33,10 @@ namespace ALQANCHA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Activo")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Apellido")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -46,11 +44,13 @@ namespace ALQANCHA.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");
 
@@ -73,7 +73,8 @@ namespace ALQANCHA.Migrations
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("PrecioXHora")
                         .HasColumnType("int");
@@ -83,7 +84,8 @@ namespace ALQANCHA.Migrations
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");
 
@@ -100,11 +102,13 @@ namespace ALQANCHA.Migrations
 
                     b.Property<string>("Apellido")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Dni")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -122,16 +126,18 @@ namespace ALQANCHA.Migrations
                     b.Property<DateTime>("FechaDisponible")
                         .HasColumnType("datetime2");
 
-                    b.Property<TimeSpan>("HoraDisponible")
+                    b.Property<TimeSpan>("HoraInicio")
                         .HasColumnType("time");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");
 
@@ -146,14 +152,17 @@ namespace ALQANCHA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AdministradorId")
+                    b.Property<int?>("AdministradorId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Apellido")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("CanchaId")
+                    b.Property<int?>("CanchaId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("CantJugadores")
@@ -162,24 +171,33 @@ namespace ALQANCHA.Migrations
                     b.Property<bool>("Confirmada")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Correo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("EsStream")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("Fecha")
+                    b.Property<DateTime>("FechaReserva")
                         .HasColumnType("datetime2");
 
-                    b.Property<TimeSpan>("Hora")
+                    b.Property<TimeSpan>("HoraInicio")
                         .HasColumnType("time");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<bool>("RequiereArquero")
                         .HasColumnType("bit");
 
                     b.Property<bool>("RequiereJugador")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TipoReserva")
                         .HasColumnType("int");
@@ -193,6 +211,23 @@ namespace ALQANCHA.Migrations
                     b.ToTable("Reservas");
                 });
 
+            modelBuilder.Entity("ALQANCHA.Models.ReservaJugador", b =>
+                {
+                    b.Property<int>("ReservaId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    b.Property<int>("JugadorId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.HasKey("ReservaId", "JugadorId");
+
+                    b.HasIndex("JugadorId");
+
+                    b.ToTable("ReservaJugadores");
+                });
+
             modelBuilder.Entity("ALQANCHA.Models.Sancion", b =>
                 {
                     b.Property<int>("Id")
@@ -203,7 +238,8 @@ namespace ALQANCHA.Migrations
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<DateTime>("FechaImposicion")
                         .HasColumnType("datetime2");
@@ -213,8 +249,7 @@ namespace ALQANCHA.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("JugadorId")
-                        .IsUnique();
+                    b.HasIndex("JugadorId");
 
                     b.ToTable("Sanciones");
                 });
@@ -222,15 +257,15 @@ namespace ALQANCHA.Migrations
             modelBuilder.Entity("ALQANCHA.Models.Reserva", b =>
                 {
                     b.HasOne("ALQANCHA.Models.Administrador", "Administrador")
-                        .WithMany()
+                        .WithMany("Reservas")
                         .HasForeignKey("AdministradorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ALQANCHA.Models.Cancha", "Cancha")
                         .WithMany()
                         .HasForeignKey("CanchaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Administrador");
@@ -238,21 +273,44 @@ namespace ALQANCHA.Migrations
                     b.Navigation("Cancha");
                 });
 
+            modelBuilder.Entity("ALQANCHA.Models.ReservaJugador", b =>
+                {
+                    b.HasOne("ALQANCHA.Models.Jugador", "Jugador")
+                        .WithMany()
+                        .HasForeignKey("JugadorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ALQANCHA.Models.Reserva", "Reserva")
+                        .WithMany("ReservaJugadores")
+                        .HasForeignKey("ReservaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Jugador");
+
+                    b.Navigation("Reserva");
+                });
+
             modelBuilder.Entity("ALQANCHA.Models.Sancion", b =>
                 {
                     b.HasOne("ALQANCHA.Models.Jugador", "Jugador")
-                        .WithOne("Sancion")
-                        .HasForeignKey("ALQANCHA.Models.Sancion", "JugadorId")
+                        .WithMany()
+                        .HasForeignKey("JugadorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Jugador");
                 });
 
-            modelBuilder.Entity("ALQANCHA.Models.Jugador", b =>
+            modelBuilder.Entity("ALQANCHA.Models.Administrador", b =>
                 {
-                    b.Navigation("Sancion")
-                        .IsRequired();
+                    b.Navigation("Reservas");
+                });
+
+            modelBuilder.Entity("ALQANCHA.Models.Reserva", b =>
+                {
+                    b.Navigation("ReservaJugadores");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ALQANCHA.Models;
 using ALQCANCHA.Context;
@@ -50,14 +49,14 @@ namespace ALQANCHA.Controllers
         }
 
         // POST: Cancha/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CantJugadores,Descripcion,Telefono,PrecioXHora,Reservada,Confirmada")] Cancha cancha)
+        public async Task<IActionResult> Create([Bind("Id,CantJugadores,Descripcion,Telefono,PrecioXHora")] Cancha cancha)
         {
             if (ModelState.IsValid)
             {
+                cancha.Reservada = false;
+                cancha.Confirmada = false;
                 _context.Add(cancha);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -82,8 +81,6 @@ namespace ALQANCHA.Controllers
         }
 
         // POST: Cancha/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,CantJugadores,Descripcion,Telefono,PrecioXHora,Reservada,Confirmada")] Cancha cancha)

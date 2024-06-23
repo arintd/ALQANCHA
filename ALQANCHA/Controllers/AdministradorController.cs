@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ALQANCHA.Models;
 using ALQCANCHA.Context;
@@ -50,11 +46,9 @@ namespace ALQANCHA.Controllers
         }
 
         // POST: Administrador/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Apellido,Telefono,Activo,Email")] Administrador administrador)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Apellido,Email,Telefono")] Administrador administrador)
         {
             if (ModelState.IsValid)
             {
@@ -82,11 +76,9 @@ namespace ALQANCHA.Controllers
         }
 
         // POST: Administrador/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Apellido,Telefono,Activo,Email")] Administrador administrador)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Apellido,Email,Telefono")] Administrador administrador)
         {
             if (id != administrador.Id)
             {
@@ -140,11 +132,7 @@ namespace ALQANCHA.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var administrador = await _context.Administradores.FindAsync(id);
-            if (administrador != null)
-            {
-                _context.Administradores.Remove(administrador);
-            }
-
+            _context.Administradores.Remove(administrador);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
