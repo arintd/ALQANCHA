@@ -12,7 +12,10 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ALQANCHA</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo-alqancha.png" alt="ALQANCHA Logo" style="height: 30px; width: auto; margin-right: 10px;">
+                    ALQANCHA
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,10 +23,27 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark fw-bold" href="https://www.youtube.com/watch?v=N97zc2alptg" target="_blank">ALAQ TV</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="Administrador" asp-action="Index">Administrador</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="Jugador" asp-action="Index">Jugador</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="Cancha" asp-action="Index">Cancha</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="Reserva" asp-action="Index">Reserva</a>
+                        </li>                    
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link whatsapp-link" href="https://wa.me/xxxxxxxxxx">
+                                <img src="~/images/icono-whatsapp.png" alt="WhatsApp" style="width: 30px; height: auto; margin-right: 10px;">
+                                WhatsApp
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -38,7 +58,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - ALQANCHA - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <p> ® 2024 ALQANCHA - Desarrollo Web Grupo 3 12E PNT1 ORT </p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

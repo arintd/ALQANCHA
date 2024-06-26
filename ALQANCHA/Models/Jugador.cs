@@ -49,5 +49,10 @@ namespace ALQANCHA.Models
 
         [Display(Name = "¿Está sancionado?")]
         public bool EstaSancionado { get; set; }
+
+        // Nuevo atributo para indicar si el jugador está bloqueado
+        [Display(Name = "¿Está asignado a otra reserva?")]
+
+        public bool EstaBloqueado { get; set; }
     }
 }

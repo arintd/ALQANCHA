@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Cancha</h4>
+<div class="container">
+    <div class="admin-background">
+        <h2>Editar Cancha</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -43,15 +43,17 @@
                     <input class="form-check-input" asp-for="Confirmada" /> @Html.DisplayNameFor(model => model.Confirmada)
                 </label>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+            
+                    <div class="form-group mt-3 d-flex justify-content-end">
+                        <input type="submit" value="Save" class="btn btn-primary me-2" />
+                        <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
+                    </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+   
 </div>
 
 @section Scripts {

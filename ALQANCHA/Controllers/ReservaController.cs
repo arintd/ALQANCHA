@@ -29,7 +29,7 @@ namespace ALQANCHA.Controllers
             return _context.Jugadores
                 .Where(j => j.FechaDisponible == fechaReserva && j.HoraInicio == horaInicio && !j.EstaSancionado &&
                             ((requiereJugador && j.EsJugador) || (requiereArquero && j.EsArquero)) &&
-                            !jugadoresReservados.Contains(j.Id))
+                            !jugadoresReservados.Contains(j.Id) && !j.EstaBloqueado) // Añado atributo para asegurarse de que solo se obtengan los jugadores que no están bloqueados.
                 .ToList();
         }
 
@@ -87,7 +87,7 @@ namespace ALQANCHA.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,AdministradorId,CanchaId,FechaReserva,HoraInicio,Nombre,Apellido,Telefono,Correo,CantJugadores,RequiereJugador,RequiereArquero,EsStream,TipoReserva,Confirmada")] Reserva reserva, int[] JugadoresSeleccionados)
-        {
+        {   
             if (ModelState.IsValid)
             {
                 try
@@ -99,6 +99,60 @@ namespace ALQANCHA.Controllers
                         return View(reserva);
                     }
 
+
+
+                    // Validar disponibilidad de la cancha
+                    bool canchaReservada = _context.Reservas
+                        .Any(r => r.CanchaId == reserva.CanchaId
+                               && r.FechaReserva == reserva.FechaReserva
+                               && r.HoraInicio == reserva.HoraInicio
+                               && r.Confirmada
+                               && r.Id != reserva.Id); 
+
+                    if (canchaReservada)
+                    {
+                        ModelState.AddModelError("CanchaId", "La cancha ya está reservada para la fecha y hora seleccionadas.");
+                        return View(reserva);
+                    }
+
+                    // Obtener jugadores reservados para la misma fecha y hora
+                    var jugadoresReservados = await _context.ReservaJugadores
+                        .Where(rj => rj.Reserva.FechaReserva == reserva.FechaReserva && rj.Reserva.HoraInicio == reserva.HoraInicio)
+                        .Select(rj => rj.JugadorId)
+                        .ToListAsync();
+
+                    // Verificar disponibilidad y bloqueo de los jugadores seleccionados
+                    foreach (var jugadorId in JugadoresSeleccionados)
+                    {
+                        var jugador = await _context.Jugadores.FindAsync(jugadorId);
+                        if (jugador == null)
+                        {
+                            ModelState.AddModelError("JugadoresSeleccionados", $"El jugador con ID {jugadorId} no existe.");
+                            return View(reserva);
+                        }
+
+                        if (jugadoresReservados.Contains(jugadorId))
+                        {
+                            ModelState.AddModelError("JugadoresSeleccionados", $"El jugador con ID {jugadorId} ya está reservado para la fecha y hora seleccionadas.");
+                            return View(reserva);
+                        }
+
+                        if (jugador.EstaBloqueado)
+                        {
+                            ModelState.AddModelError("JugadoresSeleccionados", $"El jugador con ID {jugadorId} está bloqueado y no puede ser asignado a la reserva.");
+                            return View(reserva);
+                        }
+
+                        // Marcar jugador como bloqueado
+                        jugador.EstaBloqueado = true;
+
+                        // Actualizar disponibilidad del jugador
+                        jugador.FechaDisponible = reserva.FechaReserva;
+                        jugador.HoraInicio = reserva.HoraInicio;
+
+                        _context.Update(jugador);
+
+                    }
                     int minJugadores = 0;
                     if (reserva.RequiereJugador) minJugadores += 1;
                     if (reserva.RequiereArquero) minJugadores += 1;
@@ -114,33 +168,35 @@ namespace ALQANCHA.Controllers
                         return View(reserva);
                     }
 
+                    // Agregar la reserva al contexto y guardarla en la base de datos
+                    _context.Add(reserva);
+                    await _context.SaveChangesAsync();
+
                     if (reserva.Confirmada)
                     {
                         // Bloquear la cancha para la fecha y hora seleccionadas
                         cancha.Reservada = true;
                         _context.Update(cancha);
 
-                        // Bloquear los jugadores seleccionados
-                        foreach (var jugadorId in JugadoresSeleccionados)
-                        {
-                            var jugador = await _context.Jugadores.FindAsync(jugadorId);
-                            if (jugador != null)
+                            // Asociar jugadores a la reserva
+                            if (JugadoresSeleccionados != null && JugadoresSeleccionados.Length > 0)
                             {
-                                jugador.FechaDisponible = reserva.FechaReserva;
-                                jugador.HoraInicio = reserva.HoraInicio;
-                                _context.Update(jugador);
+                                foreach (var jugadorSeleccionadoId in JugadoresSeleccionados)
+                                {
+                                    reserva.ReservaJugadores.Add(new ReservaJugador { ReservaId = reserva.Id, JugadorId = jugadorSeleccionadoId });
+                                }
+                                await _context.SaveChangesAsync();
                             }
-                        }
-                    }
 
-                    _context.Add(reserva);
-                    await _context.SaveChangesAsync();
+
+                        }
+
 
                     if (JugadoresSeleccionados != null && JugadoresSeleccionados.Length > 0)
                     {
-                        foreach (var jugadorId in JugadoresSeleccionados)
+                        foreach (var jugadorSeleccionadoId in JugadoresSeleccionados)
                         {
-                            _context.ReservaJugadores.Add(new ReservaJugador { ReservaId = reserva.Id, JugadorId = jugadorId });
+                            _context.ReservaJugadores.Add(new ReservaJugador { ReservaId = reserva.Id, JugadorId = jugadorSeleccionadoId });
                         }
                         await _context.SaveChangesAsync();
                     }
@@ -209,6 +265,48 @@ namespace ALQANCHA.Controllers
                         ModelState.AddModelError("CanchaId", "Cancha no encontrada.");
                         return View(reserva);
                     }
+
+
+
+                    // Validar disponibilidad de la cancha
+                    bool canchaReservada = _context.Reservas
+                        .Any(r => r.CanchaId == reserva.CanchaId
+                               && r.FechaReserva == reserva.FechaReserva
+                               && r.HoraInicio == reserva.HoraInicio
+                               && r.Confirmada
+                               && r.Id != reserva.Id);
+
+                    if (canchaReservada)
+                    {
+                        ModelState.AddModelError("CanchaId", "La cancha ya está reservada para la fecha y hora seleccionadas.");
+                        return View(reserva);
+                    }
+
+                    // Validar que los jugadores seleccionados no estén asignados a otra reserva para la misma fecha y hora
+                    var jugadoresAsignadosOcupados = _context.ReservaJugadores
+                        .Include(rj => rj.Reserva)
+                        .Where(rj => JugadoresSeleccionados.Contains(rj.JugadorId)
+                                  && rj.Reserva.FechaReserva == reserva.FechaReserva
+                                  && rj.Reserva.HoraInicio == reserva.HoraInicio)
+                        .ToList();
+
+                    if (jugadoresAsignadosOcupados.Any())
+                    {
+                        var jugadoresOcupados = jugadoresAsignadosOcupados.Select(rj => rj.Jugador.Nombre).Distinct();
+                        ModelState.AddModelError(string.Empty, $"Los siguientes jugadores ya están asignados para otra reserva en el mismo horario y fecha: {string.Join(", ", jugadoresOcupados)}");
+                        return View(reserva);
+                    }
+
+                    int minJugadores = 0;
+                    if (reserva.RequiereJugador) minJugadores += 1;
+                    if (reserva.RequiereArquero) minJugadores += 1;
+
+                    if (reserva.CantJugadores < minJugadores || reserva.CantJugadores > cancha.CantJugadores)
+                    {
+                        ModelState.AddModelError("CantJugadores", $"La cantidad de jugadores debe estar entre {minJugadores} y {cancha.CantJugadores}.");
+                        return View(reserva);
+                    }
+
 
                     if (reserva.Confirmada)
                     {

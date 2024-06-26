@@ -4,12 +4,15 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="container">
+    <div class="admin-background"> <!-- Agrega esta clase para el fondo -->
+        <h2>Listado de Administradores</h2>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Crear Nuevo</a>
 </p>
 <table class="table">
+    <thead>
     <thead>
         <tr>
             <th>
@@ -52,3 +55,5 @@
         }
     </tbody>
 </table>
+    </div>
+</div>
