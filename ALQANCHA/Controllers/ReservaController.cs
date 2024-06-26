@@ -168,6 +168,14 @@ namespace ALQANCHA.Controllers
                         return View(reserva);
                     }
 
+                    // Incrementar precio si es Stream
+                    if (reserva.EsStream)
+                    {
+                        cancha.PrecioXHora = (int)(cancha.PrecioXHora * 1.15m); // Aumento del 15%
+                        _context.Update(cancha);
+                        await _context.SaveChangesAsync();
+                    }
+
                     // Agregar la reserva al contexto y guardarla en la base de datos
                     _context.Add(reserva);
                     await _context.SaveChangesAsync();
@@ -313,6 +321,14 @@ namespace ALQANCHA.Controllers
                         // Bloquear la cancha para la fecha y hora seleccionadas
                         cancha.Reservada = true;
                         _context.Update(cancha);
+
+                        // Incrementar precio si es Stream
+                        if (reserva.EsStream)
+                        {
+                            cancha.PrecioXHora = (int)(cancha.PrecioXHora * 1.15m); // Aumento del 15%
+                            _context.Update(cancha);
+                            await _context.SaveChangesAsync();
+                        }
 
                         // Bloquear los jugadores seleccionados
                         foreach (var jugadorId in JugadoresSeleccionados)

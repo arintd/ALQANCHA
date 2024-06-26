@@ -83,3 +83,11 @@ h2 {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     font-weight: bold;
 }
+
+h3 {
+    font-family: 'Nunito', sans-serif;
+    color: #40423E;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    font-weight: bold;
+    font-size: 1.25rem;
+}
