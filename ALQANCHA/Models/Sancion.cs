@@ -25,7 +25,7 @@ namespace ALQANCHA.Models
         [Display(Name = "Fecha de Imposición")]
         public DateTime FechaImposicion { get; set; }
 
-        // Propiedad de navegación
+      
         public virtual Jugador Jugador { get; set; }
     }
 }

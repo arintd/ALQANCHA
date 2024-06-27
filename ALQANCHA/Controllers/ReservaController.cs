@@ -22,7 +22,7 @@ namespace ALQANCHA.Controllers
         private IEnumerable<Jugador> ObtenerJugadoresDisponibles(DateTime fechaReserva, TimeSpan horaInicio, bool requiereJugador, bool requiereArquero)
         {
             var jugadoresReservados = _context.ReservaJugadores
-                .Where(rj => rj.Reserva.FechaReserva == fechaReserva && rj.Reserva.HoraInicio == horaInicio)
+                .Where(rj => rj.Reserva.FechaReserva == fechaReserva && rj.Reserva.HoraInicio == horaInicio && rj.Reserva.Confirmada)
                 .Select(rj => rj.JugadorId)
                 .ToList();
 
@@ -86,8 +86,13 @@ namespace ALQANCHA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+<<<<<<< Updated upstream
         public async Task<IActionResult> Create([Bind("Id,AdministradorId,CanchaId,FechaReserva,HoraInicio,Nombre,Apellido,Telefono,Correo,CantJugadores,RequiereJugador,RequiereArquero,EsStream,TipoReserva,Confirmada")] Reserva reserva, int[] JugadoresSeleccionados)
         {   
+=======
+        public async Task<IActionResult> Create([Bind("Id,AdministradorId,CanchaId,FechaReserva,HoraInicio,Nombre,Apellido,Telefono,Correo,CantJugadores,RequiereJugador,RequiereArquero,EsStream,TipoReserva,Confirmada")] Reserva reserva, int[] ReservaJugadores)
+        {
+>>>>>>> Stashed changes
             if (ModelState.IsValid)
             {
                 try
@@ -96,9 +101,11 @@ namespace ALQANCHA.Controllers
                     if (cancha == null)
                     {
                         ModelState.AddModelError("CanchaId", "Cancha no encontrada.");
+                        CargarViewDataParaReserva(reserva);
                         return View(reserva);
                     }
 
+<<<<<<< Updated upstream
 
 
                     // Validar disponibilidad de la cancha
@@ -158,16 +165,18 @@ namespace ALQANCHA.Controllers
                     if (reserva.RequiereArquero) minJugadores += 1;
 
                     if (reserva.CantJugadores < minJugadores || reserva.CantJugadores > cancha.CantJugadores)
+=======
+                    // Verificar si la cancha ya está reservada en la misma fechahora
+                    bool canchaOcupada = _context.Reservas.Any(r => r.CanchaId == reserva.CanchaId && r.FechaReserva == reserva.FechaReserva && r.HoraInicio == reserva.HoraInicio && r.Confirmada);
+                    if (canchaOcupada)
+>>>>>>> Stashed changes
                     {
-                        ModelState.AddModelError("CantJugadores", $"La cantidad de jugadores debe estar entre {minJugadores} y {cancha.CantJugadores}.");
-                        ViewData["AdministradorId"] = reserva.AdministradorId;
-                        ViewData["CanchaId"] = new SelectList(_context.Canchas, "Id", "Descripcion", reserva.CanchaId);
-                        ViewData["HorasDisponibles"] = new SelectList(Enumerable.Range(10, 15).Select(h => new { Value = new TimeSpan(h, 0, 0), Text = $"{h}:00" }), "Value", "Text", reserva.HoraInicio);
-                        ViewData["JugadoresDisponibles"] = new MultiSelectList(ObtenerJugadoresDisponibles(reserva.FechaReserva, reserva.HoraInicio, reserva.RequiereJugador, reserva.RequiereArquero), "Id", "Nombre");
-                        ViewData["TipoReserva"] = new SelectList(Enum.GetValues(typeof(TipoReserva)));
+                        ModelState.AddModelError("CanchaId", "La cancha ya está reservada en esta fecha y hora.");
+                        CargarViewDataParaReserva(reserva);
                         return View(reserva);
                     }
 
+<<<<<<< Updated upstream
                     // Incrementar precio si es Stream
                     if (reserva.EsStream)
                     {
@@ -180,14 +189,36 @@ namespace ALQANCHA.Controllers
                     _context.Add(reserva);
                     await _context.SaveChangesAsync();
 
+=======
+                    // Verificar si los jugadores seleccionados ya están reservados en la misma fechahora
+                    foreach (var jugadorId in ReservaJugadores)
+                    {
+                        bool jugadorOcupado = _context.ReservaJugadores.Any(rj => rj.JugadorId == jugadorId && rj.Reserva.FechaReserva == reserva.FechaReserva && rj.Reserva.HoraInicio == reserva.HoraInicio && rj.Reserva.Confirmada);
+                        if (jugadorOcupado)
+                        {
+                            ModelState.AddModelError("ReservaJugadores", $"El jugador con ID {jugadorId} ya está reservado en esta fecha y hora.");
+                            CargarViewDataParaReserva(reserva);
+                            return View(reserva);
+                        }
+                    }
+
+>>>>>>> Stashed changes
                     if (reserva.Confirmada)
                     {
-                        // Bloquear la cancha para la fecha y hora seleccionadas
+                        // Bloquear la cancha en esa fechahora seleccionada
                         cancha.Reservada = true;
                         _context.Update(cancha);
 
+<<<<<<< Updated upstream
                             // Asociar jugadores a la reserva
                             if (JugadoresSeleccionados != null && JugadoresSeleccionados.Length > 0)
+=======
+                        // Bloquear los jugadores seleccionados
+                        foreach (var jugadorId in ReservaJugadores)
+                        {
+                            var jugador = await _context.Jugadores.FindAsync(jugadorId);
+                            if (jugador != null)
+>>>>>>> Stashed changes
                             {
                                 foreach (var jugadorSeleccionadoId in JugadoresSeleccionados)
                                 {
@@ -200,9 +231,13 @@ namespace ALQANCHA.Controllers
                         }
 
 
-                    if (JugadoresSeleccionados != null && JugadoresSeleccionados.Length > 0)
+                    if (ReservaJugadores != null && ReservaJugadores.Length > 0)
                     {
+<<<<<<< Updated upstream
                         foreach (var jugadorSeleccionadoId in JugadoresSeleccionados)
+=======
+                        foreach (var jugadorId in ReservaJugadores)
+>>>>>>> Stashed changes
                         {
                             _context.ReservaJugadores.Add(new ReservaJugador { ReservaId = reserva.Id, JugadorId = jugadorSeleccionadoId });
                         }
@@ -222,11 +257,7 @@ namespace ALQANCHA.Controllers
                 ModelState.AddModelError(string.Empty, $"ModelState no es válido. Errores: " + string.Join(", ", errors));
             }
 
-            ViewData["AdministradorId"] = reserva.AdministradorId;
-            ViewData["CanchaId"] = new SelectList(_context.Canchas, "Id", "Descripcion", reserva.CanchaId);
-            ViewData["HorasDisponibles"] = new SelectList(Enumerable.Range(10, 15).Select(h => new { Value = new TimeSpan(h, 0, 0), Text = $"{h}:00" }), "Value", "Text", reserva.HoraInicio);
-            ViewData["JugadoresDisponibles"] = new MultiSelectList(ObtenerJugadoresDisponibles(reserva.FechaReserva, reserva.HoraInicio, reserva.RequiereJugador, reserva.RequiereArquero), "Id", "Nombre");
-            ViewData["TipoReserva"] = new SelectList(Enum.GetValues(typeof(TipoReserva)));
+            CargarViewDataParaReserva(reserva);
             return View(reserva);
         }
 
@@ -270,10 +301,12 @@ namespace ALQANCHA.Controllers
                     var cancha = await _context.Canchas.FindAsync(reserva.CanchaId);
                     if (cancha == null)
                     {
-                        ModelState.AddModelError("CanchaId", "Cancha no encontrada.");
+                        ModelState.AddModelError("CanchaId", "Cancha no existe.");
+                        CargarViewDataParaReserva(reserva);
                         return View(reserva);
                     }
 
+<<<<<<< Updated upstream
 
 
                     // Validar disponibilidad de la cancha
@@ -316,12 +349,36 @@ namespace ALQANCHA.Controllers
                     }
 
 
+=======
+                    // Verificar si la cancha ya está reservada en esa misma fechahora
+                    bool canchaOcupada = _context.Reservas.Any(r => r.CanchaId == reserva.CanchaId && r.FechaReserva == reserva.FechaReserva && r.HoraInicio == reserva.HoraInicio && r.Confirmada && r.Id != reserva.Id);
+                    if (canchaOcupada)
+                    {
+                        ModelState.AddModelError("CanchaId", "La cancha ya está reservada en esta fecha y hora.");
+                        CargarViewDataParaReserva(reserva);
+                        return View(reserva);
+                    }
+
+                    // Verificar si los jugadores seleccionados ya están reservados en esa fechahora
+                    foreach (var jugadorId in JugadoresSeleccionados)
+                    {
+                        bool jugadorOcupado = _context.ReservaJugadores.Any(rj => rj.JugadorId == jugadorId && rj.Reserva.FechaReserva == reserva.FechaReserva && rj.Reserva.HoraInicio == reserva.HoraInicio && rj.Reserva.Confirmada && rj.ReservaId != reserva.Id);
+                        if (jugadorOcupado)
+                        {
+                            ModelState.AddModelError("JugadoresSeleccionados", $"El jugador con ID {jugadorId} ya está reservado en esta fecha y hora.");
+                            CargarViewDataParaReserva(reserva);
+                            return View(reserva);
+                        }
+                    }
+
+>>>>>>> Stashed changes
                     if (reserva.Confirmada)
                     {
-                        // Bloquear la cancha para la fecha y hora seleccionadas
+                        // Bloquear la cancha para la fechahora seleccionada
                         cancha.Reservada = true;
                         _context.Update(cancha);
 
+<<<<<<< Updated upstream
                         // Incrementar precio si es Stream
                         if (reserva.EsStream)
                         {
@@ -331,6 +388,9 @@ namespace ALQANCHA.Controllers
                         }
 
                         // Bloquear los jugadores seleccionados
+=======
+                        // Bloquear los jugadores seleccionados, si es que hay
+>>>>>>> Stashed changes
                         foreach (var jugadorId in JugadoresSeleccionados)
                         {
                             var jugador = await _context.Jugadores.FindAsync(jugadorId);
@@ -346,6 +406,19 @@ namespace ALQANCHA.Controllers
                     _context.Update(reserva);
                     await _context.SaveChangesAsync();
 
+                    // Actualizar ReservaJugadores
+                    var reservaJugadoresExistentes = _context.ReservaJugadores.Where(rj => rj.ReservaId == reserva.Id).ToList();
+                    _context.ReservaJugadores.RemoveRange(reservaJugadoresExistentes);
+
+                    if (JugadoresSeleccionados != null && JugadoresSeleccionados.Length > 0)
+                    {
+                        foreach (var jugadorId in JugadoresSeleccionados)
+                        {
+                            _context.ReservaJugadores.Add(new ReservaJugador { ReservaId = reserva.Id, JugadorId = jugadorId });
+                        }
+                        await _context.SaveChangesAsync();
+                    }
+
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
@@ -360,11 +433,8 @@ namespace ALQANCHA.Controllers
                     }
                 }
             }
-            ViewData["AdministradorId"] = new SelectList(_context.Administradores, "Id", "Nombre", reserva.AdministradorId);
-            ViewData["CanchaId"] = new SelectList(_context.Canchas, "Id", "Descripcion", reserva.CanchaId);
-            ViewData["HorasDisponibles"] = new SelectList(Enumerable.Range(10, 15).Select(h => new { Value = new TimeSpan(h, 0, 0), Text = $"{h}:00" }), "Value", "Text", reserva.HoraInicio);
-            ViewData["JugadoresDisponibles"] = new MultiSelectList(ObtenerJugadoresDisponibles(reserva.FechaReserva, reserva.HoraInicio, reserva.RequiereJugador, reserva.RequiereArquero), "Id", "Nombre");
-            ViewData["TipoReserva"] = new SelectList(Enum.GetValues(typeof(TipoReserva)));
+
+            CargarViewDataParaReserva(reserva);
             return View(reserva);
         }
 
@@ -405,10 +475,18 @@ namespace ALQANCHA.Controllers
         }
 
         [HttpGet]
-        public IActionResult ObtenerJugadoresDisponiblesAjax(DateTime fechaReserva, TimeSpan horaInicio, bool requiereJugador, bool requiereArquero)
+        public IActionResult ObtenerDisponiblesAjax(DateTime fechaReserva, TimeSpan horaInicio, bool requiereJugador, bool requiereArquero)
         {
-            var jugadoresDisponibles = ObtenerJugadoresDisponibles(fechaReserva, horaInicio, requiereJugador, requiereArquero);
-            return Json(jugadoresDisponibles.Select(j => new { j.Id, j.Nombre }));
+            var canchasDisponibles = _context.Canchas
+                .Where(c => !_context.Reservas.Any(r => r.CanchaId == c.Id && r.FechaReserva == fechaReserva && r.HoraInicio == horaInicio && r.Confirmada))
+                .Select(c => new { c.Id, c.Descripcion })
+                .ToList();
+
+            var jugadoresDisponibles = ObtenerJugadoresDisponibles(fechaReserva, horaInicio, requiereJugador, requiereArquero)
+                .Select(j => new { j.Id, j.Nombre })
+                .ToList();
+
+            return Json(new { canchasDisponibles, jugadoresDisponibles });
         }
 
         [HttpGet]
@@ -420,6 +498,15 @@ namespace ALQANCHA.Controllers
                 return NotFound();
             }
             return Json(new { cancha.CantJugadores });
+        }
+
+        private void CargarViewDataParaReserva(Reserva reserva)
+        {
+            ViewData["AdministradorId"] = new SelectList(_context.Administradores, "Id", "Nombre", reserva.AdministradorId);
+            ViewData["CanchaId"] = new SelectList(_context.Canchas, "Id", "Descripcion", reserva.CanchaId);
+            ViewData["HorasDisponibles"] = new SelectList(Enumerable.Range(10, 15).Select(h => new { Value = new TimeSpan(h, 0, 0), Text = $"{h}:00" }), "Value", "Text", reserva.HoraInicio);
+            ViewData["JugadoresDisponibles"] = new MultiSelectList(ObtenerJugadoresDisponibles(reserva.FechaReserva, reserva.HoraInicio, reserva.RequiereJugador, reserva.RequiereArquero), "Id", "Nombre");
+            ViewData["TipoReserva"] = new SelectList(Enum.GetValues(typeof(TipoReserva)));
         }
     }
 }

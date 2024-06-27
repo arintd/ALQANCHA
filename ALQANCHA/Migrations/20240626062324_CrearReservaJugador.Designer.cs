@@ -4,6 +4,7 @@ using ALQCANCHA.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ALQANCHA.Migrations
 {
     [DbContext(typeof(AlqanchaDatabaseContext))]
-    partial class AlqanchaDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240626062324_CrearReservaJugador")]
+    partial class CrearReservaJugador
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,9 +118,6 @@ namespace ALQANCHA.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("EsJugador")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("EstaBloqueado")
                         .HasColumnType("bit");
 
                     b.Property<bool>("EstaSancionado")

@@ -59,7 +59,7 @@ namespace ALQANCHA.Models
         public TipoReserva TipoReserva { get; set; }
         public bool Confirmada { get; set; }
 
-        // Propiedades de navegación
+   
         public virtual ICollection<ReservaJugador> ReservaJugadores { get; set; } = new List<ReservaJugador>();
     }
 

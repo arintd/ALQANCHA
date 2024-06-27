@@ -26,7 +26,7 @@ namespace ALQANCHA.Models
         [StringLength(15, MinimumLength = 5, ErrorMessage = "El teléfono debe tener entre 5 y 15 caracteres")]
         public string Telefono { get; set; }
 
-        // Propiedades de navegación
+       
         public virtual ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();
     }
 }

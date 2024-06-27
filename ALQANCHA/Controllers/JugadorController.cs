@@ -25,7 +25,7 @@ namespace ALQANCHA.Controllers
             return View(await _context.Jugadores.ToListAsync());
         }
 
-        // GET: Jugador/Details/5
+        // GET: Jugador/Details/ID
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -65,7 +65,7 @@ namespace ALQANCHA.Controllers
             return View(jugador);
         }
 
-        // GET: Jugador/Edit/5
+        // GET: Jugador/Edit/ID
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -82,7 +82,7 @@ namespace ALQANCHA.Controllers
             return View(jugador);
         }
 
-        // POST: Jugador/Edit/5
+        // POST: Jugador/Edit/ID
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Dni,Nombre,Apellido,Email,Telefono,EsArquero,EsJugador,FechaDisponible,HoraInicio,EstaSancionado")] Jugador jugador)
@@ -116,7 +116,7 @@ namespace ALQANCHA.Controllers
             return View(jugador);
         }
 
-        // GET: Jugador/Delete/5
+        // GET: Jugador/Delete/ID
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +134,7 @@ namespace ALQANCHA.Controllers
             return View(jugador);
         }
 
-        // POST: Jugador/Delete/5
+        // POST: Jugador/Delete/ID
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

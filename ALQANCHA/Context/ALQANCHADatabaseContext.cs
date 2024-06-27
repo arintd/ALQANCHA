@@ -19,6 +19,9 @@ namespace ALQCANCHA.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            // Entidad ReservaJugador
             modelBuilder.Entity<ReservaJugador>()
                 .HasKey(rj => new { rj.ReservaId, rj.JugadorId });
 
@@ -29,9 +32,10 @@ namespace ALQCANCHA.Context
 
             modelBuilder.Entity<ReservaJugador>()
                 .HasOne(rj => rj.Jugador)
-                .WithMany()
+                .WithMany(j => j.ReservaJugadores)
                 .HasForeignKey(rj => rj.JugadorId);
 
+            // Entidad Reserva
             modelBuilder.Entity<Reserva>()
                 .HasOne(r => r.Administrador)
                 .WithMany(a => a.Reservas)
@@ -43,8 +47,6 @@ namespace ALQCANCHA.Context
                 .WithMany()
                 .HasForeignKey(r => r.CanchaId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            base.OnModelCreating(modelBuilder);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace ALQANCHA.Controllers
             return View(await alqanchaDatabaseContext.ToListAsync());
         }
 
-        // GET: Sancion/Details/5
+        // GET: Sancion/Details/ID
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -53,8 +53,6 @@ namespace ALQANCHA.Controllers
         }
 
         // POST: Sancion/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,JugadorId,Descripcion,FechaImposicion")] Sancion sancion)
@@ -79,7 +77,7 @@ namespace ALQANCHA.Controllers
             return View(sancion);
         }
 
-        // GET: Sancion/Edit/5
+        // GET: Sancion/Edit/ID
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -96,10 +94,8 @@ namespace ALQANCHA.Controllers
             return View(sancion);
         }
 
-        // POST: Sancion/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        // POST: Sancion/Edit/ID
+         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,JugadorId,Descripcion,FechaImposicion")] Sancion sancion)
         {
@@ -132,7 +128,7 @@ namespace ALQANCHA.Controllers
             return View(sancion);
         }
 
-        // GET: Sancion/Delete/5
+        // GET: Sancion/Delete/ID
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -151,7 +147,7 @@ namespace ALQANCHA.Controllers
             return View(sancion);
         }
 
-        // POST: Sancion/Delete/5
+        // POST: Sancion/Delete/ID
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
