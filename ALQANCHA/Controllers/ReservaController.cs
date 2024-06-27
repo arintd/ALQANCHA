@@ -109,6 +109,15 @@ namespace ALQANCHA.Controllers
                         return View(reserva);
                     }
 
+
+                    // Incrementar precio si es Stream
+                    if (reserva.EsStream)
+                    {
+                        cancha.PrecioXHora = (int)(cancha.PrecioXHora * 1.15m); // Aumento del 15%
+                        _context.Update(cancha);
+                        await _context.SaveChangesAsync();
+                    }
+
                     // Verificar si los jugadores seleccionados ya están reservados en la misma fechahora
                     foreach (var jugadorId in ReservaJugadores)
                     {
@@ -221,6 +230,14 @@ namespace ALQANCHA.Controllers
                         ModelState.AddModelError("CanchaId", "La cancha ya está reservada en esta fecha y hora.");
                         CargarViewDataParaReserva(reserva);
                         return View(reserva);
+                    }
+
+                    // Incrementar precio si es Stream
+                    if (reserva.EsStream)
+                    {
+                        cancha.PrecioXHora = (int)(cancha.PrecioXHora * 1.15m); // Aumento del 15%
+                        _context.Update(cancha);
+                        await _context.SaveChangesAsync();
                     }
 
                     // Verificar si los jugadores seleccionados ya están reservados en esa fechahora
@@ -359,5 +376,7 @@ namespace ALQANCHA.Controllers
             ViewData["JugadoresDisponibles"] = new MultiSelectList(ObtenerJugadoresDisponibles(reserva.FechaReserva, reserva.HoraInicio, reserva.RequiereJugador, reserva.RequiereArquero), "Id", "Nombre");
             ViewData["TipoReserva"] = new SelectList(Enum.GetValues(typeof(TipoReserva)));
         }
+
     }
 }
+

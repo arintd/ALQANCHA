@@ -21,7 +21,7 @@ namespace ALQANCHA.Controllers
             return View(await _context.Administradores.ToListAsync());
         }
 
-        // GET: Administrador/Details/5
+        // GET: Administrador/Details/id
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -59,7 +59,7 @@ namespace ALQANCHA.Controllers
             return View(administrador);
         }
 
-        // GET: Administrador/Edit/5
+        // GET: Administrador/Edit/id
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,7 +75,7 @@ namespace ALQANCHA.Controllers
             return View(administrador);
         }
 
-        // POST: Administrador/Edit/5
+        // POST: Administrador/Edit/id
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Apellido,Email,Telefono")] Administrador administrador)
@@ -108,7 +108,7 @@ namespace ALQANCHA.Controllers
             return View(administrador);
         }
 
-        // GET: Administrador/Delete/5
+        // GET: Administrador/Delete/id
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,7 +126,7 @@ namespace ALQANCHA.Controllers
             return View(administrador);
         }
 
-        // POST: Administrador/Delete/5
+        // POST: Administrador/Delete/id
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

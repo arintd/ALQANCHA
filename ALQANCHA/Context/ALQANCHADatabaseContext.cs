@@ -20,8 +20,9 @@ namespace ALQCANCHA.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
 
-            // Entidad ReservaJugador
+
             modelBuilder.Entity<ReservaJugador>()
                 .HasKey(rj => new { rj.ReservaId, rj.JugadorId });
 
@@ -35,7 +36,7 @@ namespace ALQCANCHA.Context
                 .WithMany(j => j.ReservaJugadores)
                 .HasForeignKey(rj => rj.JugadorId);
 
-            // Entidad Reserva
+
             modelBuilder.Entity<Reserva>()
                 .HasOne(r => r.Administrador)
                 .WithMany(a => a.Reservas)
