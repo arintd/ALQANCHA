@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -50,9 +51,7 @@ namespace ALQANCHA.Models
         [Display(Name = "¿Está sancionado?")]
         public bool EstaSancionado { get; set; }
 
-        // Nuevo atributo para indicar si el jugador está bloqueado
-        [Display(Name = "¿Está asignado a otra reserva?")]
 
-        public bool EstaBloqueado { get; set; }
+        public virtual ICollection<ReservaJugador> ReservaJugadores { get; set; } = new List<ReservaJugador>();
     }
 }

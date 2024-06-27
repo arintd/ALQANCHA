@@ -26,7 +26,7 @@ namespace ALQANCHA.Controllers
             return View(await alqanchaDatabaseContext.ToListAsync());
         }
 
-        // GET: Sancion/Details/5
+        // GET: Sancion/Details/id
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -63,13 +63,23 @@ namespace ALQANCHA.Controllers
             {
                 _context.Add(sancion);
                 await _context.SaveChangesAsync();
+
+                // Buscar al jugador y actualizar su estado EstaSancionado
+                var jugador = await _context.Jugadores.FindAsync(sancion.JugadorId);
+                if (jugador != null)
+                {
+                    jugador.EstaSancionado = true;
+                    _context.Update(jugador);
+                    await _context.SaveChangesAsync();
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["JugadorId"] = new SelectList(_context.Jugadores, "Id", "Id", sancion.JugadorId);
             return View(sancion);
         }
 
-        // GET: Sancion/Edit/5
+        // GET: Sancion/Edit/id
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,7 +96,7 @@ namespace ALQANCHA.Controllers
             return View(sancion);
         }
 
-        // POST: Sancion/Edit/5
+        // POST: Sancion/Edit/id
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -122,7 +132,7 @@ namespace ALQANCHA.Controllers
             return View(sancion);
         }
 
-        // GET: Sancion/Delete/5
+        // GET: Sancion/Delete/id
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -141,7 +151,7 @@ namespace ALQANCHA.Controllers
             return View(sancion);
         }
 
-        // POST: Sancion/Delete/5
+        // POST: Sancion/Delete/id
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

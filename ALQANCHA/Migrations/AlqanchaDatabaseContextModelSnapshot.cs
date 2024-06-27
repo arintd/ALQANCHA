@@ -117,9 +117,6 @@ namespace ALQANCHA.Migrations
                     b.Property<bool>("EsJugador")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("EstaBloqueado")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("EstaSancionado")
                         .HasColumnType("bit");
 
@@ -276,7 +273,7 @@ namespace ALQANCHA.Migrations
             modelBuilder.Entity("ALQANCHA.Models.ReservaJugador", b =>
                 {
                     b.HasOne("ALQANCHA.Models.Jugador", "Jugador")
-                        .WithMany()
+                        .WithMany("ReservaJugadores")
                         .HasForeignKey("JugadorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -306,6 +303,11 @@ namespace ALQANCHA.Migrations
             modelBuilder.Entity("ALQANCHA.Models.Administrador", b =>
                 {
                     b.Navigation("Reservas");
+                });
+
+            modelBuilder.Entity("ALQANCHA.Models.Jugador", b =>
+                {
+                    b.Navigation("ReservaJugadores");
                 });
 
             modelBuilder.Entity("ALQANCHA.Models.Reserva", b =>

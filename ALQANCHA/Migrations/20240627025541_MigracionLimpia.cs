@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ALQANCHA.Migrations
 {
     /// <inheritdoc />
-    public partial class CrearReserva : Migration
+    public partial class MigracionLimpia : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

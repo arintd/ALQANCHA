@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ALQANCHA.Migrations
 {
     [DbContext(typeof(AlqanchaDatabaseContext))]
-    [Migration("20240622195433_CreateReserva")]
-    partial class CreateReserva
+    [Migration("20240627025541_MigracionLimpia")]
+    partial class MigracionLimpia
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -276,7 +276,7 @@ namespace ALQANCHA.Migrations
             modelBuilder.Entity("ALQANCHA.Models.ReservaJugador", b =>
                 {
                     b.HasOne("ALQANCHA.Models.Jugador", "Jugador")
-                        .WithMany()
+                        .WithMany("ReservaJugadores")
                         .HasForeignKey("JugadorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -306,6 +306,11 @@ namespace ALQANCHA.Migrations
             modelBuilder.Entity("ALQANCHA.Models.Administrador", b =>
                 {
                     b.Navigation("Reservas");
+                });
+
+            modelBuilder.Entity("ALQANCHA.Models.Jugador", b =>
+                {
+                    b.Navigation("ReservaJugadores");
                 });
 
             modelBuilder.Entity("ALQANCHA.Models.Reserva", b =>
