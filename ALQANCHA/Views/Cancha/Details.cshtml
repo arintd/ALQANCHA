@@ -4,58 +4,51 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="container">
-    <div class="admin-background">
-        <h2>Detalles de la Cancha</h2>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CantJugadores)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CantJugadores)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Descripcion)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Descripcion)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Telefono)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Telefono)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PrecioXHora)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PrecioXHora)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Reservada)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Reservada)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Confirmada)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Confirmada)
-            </dd>
-        </dl>
+<h1>Details</h1>
 
-        <div class="form-group mt-3 d-flex justify-content-end">
-            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary me-2">Editar</a>
-            <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
-        </div>
-    </div>
+<div>
+    <h4>Cancha</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CantJugadores)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CantJugadores)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Telefono)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Telefono)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PrecioXHora)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PrecioXHora)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Reservada)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Reservada)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Confirmada)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Confirmada)
+        </dd>
+    </dl>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

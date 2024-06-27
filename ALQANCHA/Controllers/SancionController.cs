@@ -61,16 +61,6 @@ namespace ALQANCHA.Controllers
             {
                 _context.Add(sancion);
                 await _context.SaveChangesAsync();
-
-                // Buscar al jugador y actualizar su estado EstaSancionado
-                var jugador = await _context.Jugadores.FindAsync(sancion.JugadorId);
-                if (jugador != null)
-                {
-                    jugador.EstaSancionado = true;
-                    _context.Update(jugador);
-                    await _context.SaveChangesAsync();
-                }
-
                 return RedirectToAction(nameof(Index));
             }
             ViewData["JugadorId"] = new SelectList(_context.Jugadores, "Id", "Id", sancion.JugadorId);

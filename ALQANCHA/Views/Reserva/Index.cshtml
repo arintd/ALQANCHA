@@ -4,120 +4,108 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="container">
-    <div class="admin-background">
-        <h2>Listado de Reservas</h2>
-        <hr />
-        <p>
-            <a asp-action="Create" class="btn btn-primary">Crear Nueva Reserva</a>
-        </p>
-        <div class="overflow-auto" style="max-height: 600px;">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Administrador.Nombre)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Cancha.Descripcion)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FechaReserva)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.HoraInicio)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Nombre)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Apellido)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CantJugadores)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RequiereJugador)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RequiereArquero)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.EsStream)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.TipoReserva)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Confirmada)
-                        </th>
-                        <th>
-                            Jugadores
-                        </th>
-                        <th>
-                            Precio por Hora
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Administrador.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cancha.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaReserva)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoraInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apellido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CantJugadores)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RequiereJugador)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RequiereArquero)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EsStream)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoReserva)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Confirmada)
+            </th>
+            <th>
+                Jugadores
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Administrador.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cancha.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaReserva)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraInicio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Apellido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CantJugadores)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequiereJugador)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequiereArquero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EsStream)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoReserva)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Confirmada)
+                </td>
+                <td>
+                    @foreach (var jugador in item.ReservaJugadores)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Administrador.Nombre)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Cancha.Descripcion)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FechaReserva)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HoraInicio)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Nombre)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Apellido)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CantJugadores)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RequiereJugador)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RequiereArquero)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.EsStream)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TipoReserva)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Confirmada)
-                            </td>
-                            <td>
-                                @foreach (var jugador in item.ReservaJugadores)
-                                {
-                                    <p>@jugador.Jugador.Nombre</p>
-                                }
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Cancha.PrecioXHora)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
-                        </tr>
+                        <p>@jugador.Jugador.Nombre</p>
                     }
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

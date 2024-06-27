@@ -4,10 +4,11 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="container">
-    <div class="admin-background">
-        <h2>Detalles de la Sanción</h2>
-        <hr />
+<h1>Details</h1>
+
+<div>
+    <h4>Sancion</h4>
+    <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Descripcion)
@@ -28,15 +29,8 @@
             @Html.DisplayFor(model => model.Jugador.Id)
         </dd>
     </dl>
-        <div class="form-group mt-3 d-flex justify-content-end">
-            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary me-2">Editar</a>
-            <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
-        </div>
-    </div>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

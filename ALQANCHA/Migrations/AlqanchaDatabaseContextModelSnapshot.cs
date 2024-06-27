@@ -117,9 +117,6 @@ namespace ALQANCHA.Migrations
                     b.Property<bool>("EsJugador")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("EstaBloqueado")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("EstaSancionado")
                         .HasColumnType("bit");
 
